@@ -1,0 +1,27 @@
+﻿    
+    If isBlack = True Then
+    If enemyHere = True Then
+    If (xP = 1 Or xP = -1) And yP = 1 Then
+    Return True
+    Else
+    Return False
+    End If
+    Else
+    If yP = 1 And xP = 0 Then
+    Return True
+    End If
+    End If
+    Else
+    If enemyHere = True Then
+    If (xP = 1 Or xP = -1) And yP = -1 Then
+    Return True
+    Else
+    Return False
+    End If
+    Else
+    If yP = -1 And xP = 0 Then
+    Return True
+    End If
+    End If
+    End If
+    

@@ -1,0 +1,55 @@
+\\adler\home\2018\18BA2677\Visual Studio 2017\Projects\Chess project v1\Chess project v1\obj\Debug\Chess project v1.vbprojAssemblyReference.cache
+\\adler\home\2018\18BA2677\Visual Studio 2017\Projects\Chess project v1\Chess project v1\obj\Debug\Chess_project_v1.Resources.resources
+\\adler\home\2018\18BA2677\Visual Studio 2017\Projects\Chess project v1\Chess project v1\obj\Debug\Chess project v1.vbproj.GenerateResource.cache
+\\adler\home\2018\18BA2677\Visual Studio 2017\Projects\Chess project v1\Chess project v1\obj\Debug\Chess project v1.vbproj.CoreCompileInputs.cache
+\\adler\home\2018\18BA2677\Visual Studio 2017\Projects\Chess project v1\Chess project v1\bin\Debug\Chess project v1.exe.config
+\\adler\home\2018\18BA2677\Visual Studio 2017\Projects\Chess project v1\Chess project v1\bin\Debug\Chess project v1.exe
+\\adler\home\2018\18BA2677\Visual Studio 2017\Projects\Chess project v1\Chess project v1\bin\Debug\Chess project v1.pdb
+\\adler\home\2018\18BA2677\Visual Studio 2017\Projects\Chess project v1\Chess project v1\bin\Debug\Chess project v1.xml
+\\adler\home\2018\18BA2677\Visual Studio 2017\Projects\Chess project v1\Chess project v1\obj\Debug\Chess project v1.exe
+\\adler\home\2018\18BA2677\Visual Studio 2017\Projects\Chess project v1\Chess project v1\obj\Debug\Chess project v1.xml
+\\adler\home\2018\18BA2677\Visual Studio 2017\Projects\Chess project v1\Chess project v1\obj\Debug\Chess project v1.pdb
+H:\Visual Studio 2017\Projects\Chess project v1\Chess project v1\obj\Debug\Chess project v1.vbprojAssemblyReference.cache
+H:\Visual Studio 2017\Projects\Chess project v1\Chess project v1\obj\Debug\Chess_project_v1.Resources.resources
+H:\Visual Studio 2017\Projects\Chess project v1\Chess project v1\obj\Debug\Chess project v1.vbproj.GenerateResource.cache
+H:\Visual Studio 2017\Projects\Chess project v1\Chess project v1\obj\Debug\Chess project v1.vbproj.CoreCompileInputs.cache
+H:\Visual Studio 2017\Projects\Chess project v1\Chess project v1\obj\Debug\Chess project v1.exe
+H:\Visual Studio 2017\Projects\Chess project v1\Chess project v1\obj\Debug\Chess project v1.xml
+H:\Visual Studio 2017\Projects\Chess project v1\Chess project v1\obj\Debug\Chess project v1.pdb
+H:\Visual Studio 2017\Projects\Chess project v1\Chess project v1\bin\Debug\Chess project v1.exe.config
+H:\Visual Studio 2017\Projects\Chess project v1\Chess project v1\bin\Debug\Chess project v1.exe
+H:\Visual Studio 2017\Projects\Chess project v1\Chess project v1\bin\Debug\Chess project v1.pdb
+H:\Visual Studio 2017\Projects\Chess project v1\Chess project v1\bin\Debug\Chess project v1.xml
+D:\Documents\CS Projects\Chess\Chess project v1\obj\Debug\Chess project v1.vbprojAssemblyReference.cache
+D:\Documents\CS Projects\Chess\Chess project v1\obj\Debug\Chess_project_v1.Resources.resources
+D:\Documents\CS Projects\Chess\Chess project v1\obj\Debug\Chess project v1.vbproj.GenerateResource.cache
+D:\Documents\CS Projects\Chess\Chess project v1\obj\Debug\Chess project v1.vbproj.CoreCompileInputs.cache
+D:\Documents\CS Projects\Chess\Chess project v1\obj\Debug\Chess project v1.exe
+D:\Documents\CS Projects\Chess\Chess project v1\obj\Debug\Chess project v1.xml
+D:\Documents\CS Projects\Chess\Chess project v1\obj\Debug\Chess project v1.pdb
+D:\Documents\CS Projects\Chess\Chess project v1\bin\Debug\Chess project v1.exe.config
+D:\Documents\CS Projects\Chess\Chess project v1\bin\Debug\Chess project v1.exe
+D:\Documents\CS Projects\Chess\Chess project v1\bin\Debug\Chess project v1.pdb
+D:\Documents\CS Projects\Chess\Chess project v1\bin\Debug\Chess project v1.xml
+E:\Chess\Chess project v1\bin\Debug\Chess project v1.exe.config
+E:\Chess\Chess project v1\bin\Debug\Chess project v1.exe
+E:\Chess\Chess project v1\bin\Debug\Chess project v1.pdb
+E:\Chess\Chess project v1\bin\Debug\Chess project v1.xml
+E:\Chess\Chess project v1\obj\Debug\Chess project v1.vbprojAssemblyReference.cache
+E:\Chess\Chess project v1\obj\Debug\Chess_project_v1.Resources.resources
+E:\Chess\Chess project v1\obj\Debug\Chess project v1.vbproj.GenerateResource.cache
+E:\Chess\Chess project v1\obj\Debug\Chess project v1.vbproj.CoreCompileInputs.cache
+E:\Chess\Chess project v1\obj\Debug\Chess project v1.exe
+E:\Chess\Chess project v1\obj\Debug\Chess project v1.xml
+E:\Chess\Chess project v1\obj\Debug\Chess project v1.pdb
+G:\Chess\Chess project v1\bin\Debug\Chess project v1.exe.config
+G:\Chess\Chess project v1\bin\Debug\Chess project v1.exe
+G:\Chess\Chess project v1\bin\Debug\Chess project v1.pdb
+G:\Chess\Chess project v1\bin\Debug\Chess project v1.xml
+G:\Chess\Chess project v1\obj\Debug\Chess project v1.vbprojAssemblyReference.cache
+G:\Chess\Chess project v1\obj\Debug\Chess_project_v1.Resources.resources
+G:\Chess\Chess project v1\obj\Debug\Chess project v1.vbproj.GenerateResource.cache
+G:\Chess\Chess project v1\obj\Debug\Chess project v1.vbproj.CoreCompileInputs.cache
+G:\Chess\Chess project v1\obj\Debug\Chess project v1.exe
+G:\Chess\Chess project v1\obj\Debug\Chess project v1.xml
+G:\Chess\Chess project v1\obj\Debug\Chess project v1.pdb
