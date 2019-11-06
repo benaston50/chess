@@ -2,7 +2,6 @@
 
     Sub Main()
         Dim board As New Chessboard
-        Dim int As Integer
         Console.ReadKey()
         board.Test()
 

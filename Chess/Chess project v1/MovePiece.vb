@@ -34,10 +34,10 @@
                         piecestats(i).xPos = -1
                         piecestats(i).yPos = -1
                         piecestats(i).alive = False
-                        If piecestats(i).isBlack = True Then
-                            Console.Write("Black ")
-                        Else
+                        If piecestats(i).isWhite = True Then
                             Console.Write("White ")
+                        Else
+                            Console.Write("Black ")
                         End If
                         Select Case piecestats(i).type
                             Case 1
@@ -68,48 +68,74 @@
     Protected Function checkValidMove(ByVal xP As Integer, yP As Integer, piecestats() As Piece, selectPiece As Integer)
         Dim enemypiece As Integer
         For i = 1 To 32
-
+            'Friendly Fire check
             If piecestats(i).xPos = xP And piecestats(i).yPos = yP Then
                 enemypiece = i
-                If i <> selectPiece And ((piecestats(i).isBlack = True And piecestats(selectPiece).isBlack = True) Or (piecestats(i).isBlack = False And piecestats(selectPiece).isBlack = False)) Then
+                If i <> selectPiece And ((piecestats(i).isWhite = True And piecestats(selectPiece).isWhite = True) Or (piecestats(i).isWhite = False And piecestats(selectPiece).isWhite = False)) Then
                     Console.WriteLine("Invalid move - attacking teammate!")
                     Return False
                 End If
             End If
 
         Next
-
-        If piecestats(selectPiece).type = 1 Then
-            If piecestats(selectPiece).xPos - xP <> 0 Then
-                If piecestats(selectPiece).isBlack = True Then
-
-
-                    If piecestats(selectPiece).xPos - xP = 1 Then
-                    If enemypiece > 0 Then
+        'Pawn Rule Check
+        If piecestats(selectPiece).type = 1 Then 'Pawn type
+            If piecestats(selectPiece).isWhite = True Then 'Bottom up
+                'Attacking move check
+                If enemypiece <> 0 Then
+                    If Math.Abs(piecestats(selectPiece).xPos - xP) = 1 And piecestats(selectPiece).yPos - yP = 1 Then
                         Return True
                     Else
-                        Console.WriteLine("Invalid move - no piece exists to take!")
+                        Console.WriteLine("Invalid move - pawn cannot attack in that way!")
                         Return False
                     End If
+                End If
+                'Move forward check
+                If piecestats(selectPiece).xPos - xP = 0 And piecestats(selectPiece).yPos - yP = 1 Then
+                    Return True
                 Else
-                    Console.WriteLine("Invalid move - pawn moved too far")
+                    Console.WriteLine("Invalid move - pawn cannot move in that way!")
                     Return False
                 End If
-                    If piecestats(selectPiece).movecount = 0 Then
-                        If piecestats(selectPiece).isBlack = True Then
-
-                            If piecestats(selectPiece).yPos - yP = 1 Then
-                                Return True
-                            ElseIf piecestats(selectPiece).yPos - yP = 2 Then
-                                For i = 1 To 32
-                                    If piecestats(i).xPos = xP And piecestats(i).yPos = yP - 1 Then
-                                        Console.WriteLine("Invalid move - other piece in the way!")
-                                        Return False
-                                    End If
-                                Next
-                                Return True
+                'Two spaces allowed on first move check
+                If piecestats(selectPiece).movecount = 0 Then
+                    If piecestats(selectPiece).yPos - yP = 2 And piecestats(selectPiece).xPos - xP = 0 Then
+                        For i = 1 To 32
+                            If piecestats(i).xPos = xP And piecestats(i).yPos = yP - 1 Then
+                                Console.WriteLine("Invalid move - other piece in the way!")
+                                Return False
                             End If
-                        End If
+                        Next
+                        Return True
+                    End If
+                End If
+            Else
+                'Attacking move check
+                If enemypiece <> 0 Then
+                    If Math.Abs(piecestats(selectPiece).xPos - xP) = 1 And piecestats(selectPiece).yPos - yP = -1 Then
+                        Return True
+                    Else
+                        Console.WriteLine("Invalid move - pawn cannot attack in that way!")
+                        Return False
+                    End If
+                End If
+                'Move forward check
+                If piecestats(selectPiece).xPos - xP = 0 And piecestats(selectPiece).yPos - yP = -1 Then
+                    Return True
+                Else
+                    Console.WriteLine("Invalid move - pawn cannot move in that way!")
+                    Return False
+                End If
+                'Two spaces allowed on first move check
+                If piecestats(selectPiece).movecount = 0 Then
+                    If piecestats(selectPiece).yPos - yP = -2 And piecestats(selectPiece).xPos - xP = 0 Then
+                        For i = 1 To 32
+                            If piecestats(i).xPos = xP And piecestats(i).yPos = yP + 1 Then
+                                Console.WriteLine("Invalid move - other piece in the way!")
+                                Return False
+                            End If
+                        Next
+                        Return True
                     End If
                 End If
             End If

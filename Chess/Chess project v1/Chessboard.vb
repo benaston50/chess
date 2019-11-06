@@ -58,27 +58,33 @@
             Next
         Next
         For i = 1 To 32
-            If piecestats(i).type = 1 Then
-                board(piecestats(i).yPos, piecestats(i).xPos) = "P"
-            ElseIf piecestats(i).type = 2 Then
-                board(piecestats(i).yPos, piecestats(i).xPos) = "R"
-            ElseIf piecestats(i).type = 3 Then
-                board(piecestats(i).yPos, piecestats(i).xPos) = "n"
-            ElseIf piecestats(i).type = 4 Then
-                board(piecestats(i).yPos, piecestats(i).xPos) = "B"
-            ElseIf piecestats(i).type = 5 Then
-                board(piecestats(i).yPos, piecestats(i).xPos) = "Q"
-            ElseIf piecestats(i).type = 6 Then
-                board(piecestats(i).yPos, piecestats(i).xPos) = "K"
-            Else
+            If piecestats(i).alive = True Then
+                If piecestats(i).type = 1 Then
+                    board(piecestats(i).yPos, piecestats(i).xPos) = "P"
+                ElseIf piecestats(i).type = 2 Then
+                    board(piecestats(i).yPos, piecestats(i).xPos) = "R"
+                ElseIf piecestats(i).type = 3 Then
+                    board(piecestats(i).yPos, piecestats(i).xPos) = "n"
+                ElseIf piecestats(i).type = 4 Then
+                    board(piecestats(i).yPos, piecestats(i).xPos) = "B"
+                ElseIf piecestats(i).type = 5 Then
+                    board(piecestats(i).yPos, piecestats(i).xPos) = "Q"
+                ElseIf piecestats(i).type = 6 Then
+                    board(piecestats(i).yPos, piecestats(i).xPos) = "K"
+                Else
+                    Console.WriteLine("Error - failed to update board")
+                End If
             End If
         Next
     End Function
     Public Sub Test()
+        Dim Count As Integer
         boardGenerate()
-        interfaceUpdate()
-        pieceMove()
-        boardUpdate()
-        interfaceUpdate()
+        While True
+            boardUpdate()
+            interfaceUpdate()
+            pieceMove()
+            Count += 1
+        End While
     End Sub
 End Class

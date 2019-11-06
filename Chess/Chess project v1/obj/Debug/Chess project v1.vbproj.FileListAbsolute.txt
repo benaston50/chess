@@ -53,3 +53,14 @@ G:\Chess\Chess project v1\obj\Debug\Chess project v1.vbproj.CoreCompileInputs.ca
 G:\Chess\Chess project v1\obj\Debug\Chess project v1.exe
 G:\Chess\Chess project v1\obj\Debug\Chess project v1.xml
 G:\Chess\Chess project v1\obj\Debug\Chess project v1.pdb
+C:\Users\r2d2i\Downloads\chess-master\chess-master\Chess\Chess project v1\bin\Debug\Chess project v1.exe.config
+C:\Users\r2d2i\Downloads\chess-master\chess-master\Chess\Chess project v1\bin\Debug\Chess project v1.exe
+C:\Users\r2d2i\Downloads\chess-master\chess-master\Chess\Chess project v1\bin\Debug\Chess project v1.pdb
+C:\Users\r2d2i\Downloads\chess-master\chess-master\Chess\Chess project v1\bin\Debug\Chess project v1.xml
+C:\Users\r2d2i\Downloads\chess-master\chess-master\Chess\Chess project v1\obj\Debug\Chess project v1.vbprojAssemblyReference.cache
+C:\Users\r2d2i\Downloads\chess-master\chess-master\Chess\Chess project v1\obj\Debug\Chess_project_v1.Resources.resources
+C:\Users\r2d2i\Downloads\chess-master\chess-master\Chess\Chess project v1\obj\Debug\Chess project v1.vbproj.GenerateResource.cache
+C:\Users\r2d2i\Downloads\chess-master\chess-master\Chess\Chess project v1\obj\Debug\Chess project v1.vbproj.CoreCompileInputs.cache
+C:\Users\r2d2i\Downloads\chess-master\chess-master\Chess\Chess project v1\obj\Debug\Chess project v1.exe
+C:\Users\r2d2i\Downloads\chess-master\chess-master\Chess\Chess project v1\obj\Debug\Chess project v1.xml
+C:\Users\r2d2i\Downloads\chess-master\chess-master\Chess\Chess project v1\obj\Debug\Chess project v1.pdb

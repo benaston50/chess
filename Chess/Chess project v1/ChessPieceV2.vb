@@ -2,7 +2,7 @@
     Public Structure Piece
         Dim type As Integer
         Dim xPos, yPos As Integer
-        Dim isBlack As Boolean
+        Dim isWhite As Boolean
         Dim alive As Boolean
         Dim movecount As Integer
     End Structure
@@ -34,7 +34,7 @@
         For i = 1 To 16
             pieces(i).alive = True
             pieces(i + 16).alive = True
-            pieces(i + 16).isBlack = True
+            pieces(i + 16).isWhite = True
             If pieces(i).type = 1 Then
                 pieces(i).xPos = i - 1
                 pieces(i + 16).xPos = i - 1
