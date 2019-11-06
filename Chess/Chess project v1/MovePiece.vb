@@ -76,7 +76,7 @@
                 End If
             End If
         Next
-
+        'Desired location <> current location check
         If piecestats(selectPiece).xPos = xP And piecestats(selectPiece).yPos = yP Then
             Console.WriteLine("Error - can't take self!")
             Return False
