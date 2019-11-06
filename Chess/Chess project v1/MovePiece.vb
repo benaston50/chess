@@ -28,6 +28,7 @@
             Console.WriteLine("Pos(y)")
             yP = Console.ReadLine() - 1
             If checkValidMove(xP, yP, piecestats, selectPiece) = True Then
+                Console.Clear()
                 falseMove = False
                 For i = 1 To 32
                     If piecestats(i).xPos = xP And piecestats(i).yPos = yP Then
@@ -52,6 +53,7 @@
                                 Console.WriteLine("Queen has been taken!")
                             Case 6
                                 Console.WriteLine("Loses! Checkmate")
+                                Console.ReadKey()
                                 End
                         End Select
 
@@ -59,9 +61,6 @@
                 Next
                 piecestats(selectPiece).xPos = xP
                 piecestats(selectPiece).yPos = yP
-
-            Else
-                Console.WriteLine("Invalid move - Returned False")
             End If
         End While
     End Sub
@@ -76,8 +75,13 @@
                     Return False
                 End If
             End If
-
         Next
+
+        If piecestats(selectPiece).xPos = xP And piecestats(selectPiece).yPos = yP Then
+            Console.WriteLine("Error - can't take self!")
+            Return False
+        End If
+
         'Pawn Rule Check
         If piecestats(selectPiece).type = 1 Then 'Pawn type
             If piecestats(selectPiece).isWhite = True Then 'Bottom up
@@ -141,24 +145,35 @@
             End If
 
         ElseIf piecestats(selectPiece).type = 2 Then
-            If (piecestats(selectPiece).xPos - xP = 0 And piecestats(selectPiece).yPos - yP <> 0) Then
-
-                For i = 1 To 32
-                    For j = 1 To piecestats(selectPiece).xPos - xP
-                        If piecestats(i).xPos = j Then
-
+            If piecestats(selectPiece).isWhite = True Then
+                'Moves in y direction
+                If (piecestats(selectPiece).xPos - xP = 0 And piecestats(selectPiece).yPos - yP <> 0) Then
+                    'Checks path to specified zone for other pieces
+                    For i = 1 To 32
+                        'First checks piece is in same column, then checks if it is between piece to move and desired location
+                        If piecestats(i).xPos = piecestats(selectPiece).xPos And ((piecestats(i).yPos > piecestats(selectPiece).yPos And piecestats(i).yPos > yP) Or (piecestats(i).yPos < piecestats(selectPiece).yPos And piecestats(i).yPos < yP)) Then
+                            Console.WriteLine("Error-piece in way!")
+                            Return False
                         End If
                     Next
-                Next
-            ElseIf (piecestats(selectPiece).xPos - xP <> 0 And piecestats(selectPiece).yPos - yP = 0) Then
-                For i = 1 To 32
-                    For j = 1 To piecestats(selectPiece).yPos - yP
-
+                    Console.WriteLine()
+                    Return True
+                    'Moves in x direction
+                ElseIf (piecestats(selectPiece).xPos - xP <> 0 And piecestats(selectPiece).yPos - yP = 0) Then
+                    'Checks path to specified zone for other pieces
+                    For i = 1 To 32
+                        'First checks piece is in same row, then checks if it is between piece to move and desired location
+                        If piecestats(i).yPos = piecestats(selectPiece).yPos And ((piecestats(i).xPos > piecestats(selectPiece).xPos And piecestats(i).xPos > xP) Or (piecestats(i).xPos < piecestats(selectPiece).xPos And piecestats(i).xPos < xP)) Then
+                            Console.WriteLine("Error-piece in way!")
+                            Return False
+                        End If
                     Next
-                Next
-            Else
-                Console.WriteLine("Error: Not following chess laws")
-                Return False
+                    Console.WriteLine()
+                    Return True
+                Else
+                    Console.WriteLine("Error: Must move in a single direction only")
+                    Return False
+                End If
             End If
         End If
         Console.WriteLine("Invalid error")
