@@ -2,9 +2,11 @@
     Inherits ChessPieceV2
     Public piecestats() As Piece = PieceMake()
     Public Sub pieceMove()
-        Dim xP, yP, selectPiece As Integer
-        Dim falseMove As Boolean = True
-        While falseMove = True
+        Dim xP, yP, selectPiece, choice As Integer
+        Dim falseMove, falsePiece As Boolean
+        falseMove = True
+        falsePiece = True
+        While falsePiece = True
             Console.WriteLine("What piece do you want to move(x)")
             xP = Console.ReadLine() - 1
             Console.WriteLine("What piece do you want to move(y)")
@@ -15,12 +17,11 @@
                 End If
             Next
             If selectPiece <> 0 Then
-                falseMove = False
+                falsePiece = False
             Else
                 Console.WriteLine("no piece found here")
             End If
         End While
-        falseMove = True
         While falseMove = True
             Console.WriteLine("Where do you want to move to?")
             Console.WriteLine("Pos(x)")
@@ -61,11 +62,24 @@
                 Next
                 piecestats(selectPiece).xPos = xP
                 piecestats(selectPiece).yPos = yP
+                piecestats(selectPiece).movecount += 1
+            Else
+                Console.WriteLine("Enter 1 to choose a new place to move, enter 9 to choose a new piece")
+                choice = Console.ReadLine()
+                If choice = 9 Then
+                    falseMove = False
+                    pieceMove()
+                End If
             End If
         End While
     End Sub
     Protected Function checkValidMove(ByVal xP As Integer, yP As Integer, piecestats() As Piece, selectPiece As Integer)
         Dim enemypiece As Integer
+        Dim xPos, yPos, xDiff, yDiff As Integer
+        xPos = piecestats(selectPiece).xPos
+        yPos = piecestats(selectPiece).yPos
+        xDiff = xPos - xP
+        yDiff = yPos - yP
         For i = 1 To 32
             'Friendly Fire check
             If piecestats(i).xPos = xP And piecestats(i).yPos = yP Then
@@ -76,34 +90,28 @@
                 End If
             End If
         Next
+
         'Desired location <> current location check
-        If piecestats(selectPiece).xPos = xP And piecestats(selectPiece).yPos = yP Then
+        If xPos = xP And yPos = yP Then
             Console.WriteLine("Error - can't take self!")
             Return False
         End If
 
         'Pawn Rule Check
-        If piecestats(selectPiece).type = 1 Then 'Pawn type
-            If piecestats(selectPiece).isWhite = True Then 'Bottom up
+        If piecestats(selectPiece).type = 1 Then ' - Pawn
+            If piecestats(selectPiece).isWhite = True Then 'Bottom up(white)
                 'Attacking move check
                 If enemypiece <> 0 Then
-                    If Math.Abs(piecestats(selectPiece).xPos - xP) = 1 And piecestats(selectPiece).yPos - yP = 1 Then
+                    If Math.Abs(xDiff) = 1 And yDiff = 1 Then
                         Return True
                     Else
                         Console.WriteLine("Invalid move - pawn cannot attack in that way!")
                         Return False
                     End If
                 End If
-                'Move forward check
-                If piecestats(selectPiece).xPos - xP = 0 And piecestats(selectPiece).yPos - yP = 1 Then
-                    Return True
-                Else
-                    Console.WriteLine("Invalid move - pawn cannot move in that way!")
-                    Return False
-                End If
                 'Two spaces allowed on first move check
                 If piecestats(selectPiece).movecount = 0 Then
-                    If piecestats(selectPiece).yPos - yP = 2 And piecestats(selectPiece).xPos - xP = 0 Then
+                    If yDiff = 2 And xDiff = 0 Then
                         For i = 1 To 32
                             If piecestats(i).xPos = xP And piecestats(i).yPos = yP - 1 Then
                                 Console.WriteLine("Invalid move - other piece in the way!")
@@ -113,26 +121,27 @@
                         Return True
                     End If
                 End If
-            Else
+                'Move forward check
+                If xDiff = 0 And yDiff = 1 Then
+                    Return True
+                Else
+                    Console.WriteLine("Invalid move - pawn cannot move in that way!")
+                    Return False
+                End If
+
+            Else 'Top down(black)
                 'Attacking move check
                 If enemypiece <> 0 Then
-                    If Math.Abs(piecestats(selectPiece).xPos - xP) = 1 And piecestats(selectPiece).yPos - yP = -1 Then
+                    If Math.Abs(xDiff) = 1 And yDiff = -1 Then
                         Return True
                     Else
                         Console.WriteLine("Invalid move - pawn cannot attack in that way!")
                         Return False
                     End If
                 End If
-                'Move forward check
-                If piecestats(selectPiece).xPos - xP = 0 And piecestats(selectPiece).yPos - yP = -1 Then
-                    Return True
-                Else
-                    Console.WriteLine("Invalid move - pawn cannot move in that way!")
-                    Return False
-                End If
                 'Two spaces allowed on first move check
                 If piecestats(selectPiece).movecount = 0 Then
-                    If piecestats(selectPiece).yPos - yP = -2 And piecestats(selectPiece).xPos - xP = 0 Then
+                    If yDiff = -2 And xDiff = 0 Then
                         For i = 1 To 32
                             If piecestats(i).xPos = xP And piecestats(i).yPos = yP + 1 Then
                                 Console.WriteLine("Invalid move - other piece in the way!")
@@ -142,39 +151,68 @@
                         Return True
                     End If
                 End If
-            End If
-
-        ElseIf piecestats(selectPiece).type = 2 Then
-            If piecestats(selectPiece).isWhite = True Then
-                'Moves in y direction
-                If (piecestats(selectPiece).xPos - xP = 0 And piecestats(selectPiece).yPos - yP <> 0) Then
-                    'Checks path to specified zone for other pieces
-                    For i = 1 To 32
-                        'First checks piece is in same column, then checks if it is between piece to move and desired location
-                        If piecestats(i).xPos = piecestats(selectPiece).xPos And ((piecestats(i).yPos > piecestats(selectPiece).yPos And piecestats(i).yPos > yP) Or (piecestats(i).yPos < piecestats(selectPiece).yPos And piecestats(i).yPos < yP)) Then
-                            Console.WriteLine("Error-piece in way!")
-                            Return False
-                        End If
-                    Next
-                    Console.WriteLine()
-                    Return True
-                    'Moves in x direction
-                ElseIf (piecestats(selectPiece).xPos - xP <> 0 And piecestats(selectPiece).yPos - yP = 0) Then
-                    'Checks path to specified zone for other pieces
-                    For i = 1 To 32
-                        'First checks piece is in same row, then checks if it is between piece to move and desired location
-                        If piecestats(i).yPos = piecestats(selectPiece).yPos And ((piecestats(i).xPos > piecestats(selectPiece).xPos And piecestats(i).xPos > xP) Or (piecestats(i).xPos < piecestats(selectPiece).xPos And piecestats(i).xPos < xP)) Then
-                            Console.WriteLine("Error-piece in way!")
-                            Return False
-                        End If
-                    Next
-                    Console.WriteLine()
+                'Move forward check
+                If xDiff = 0 And yDiff = -1 Then
                     Return True
                 Else
-                    Console.WriteLine("Error: Must move in a single direction only")
+                    Console.WriteLine("Invalid move - pawn cannot move in that way!")
                     Return False
                 End If
             End If
+
+        ElseIf piecestats(selectPiece).type = 2 Then ' - Rook
+            'Moves in y direction
+            If (xDiff = 0 And yDiff <> 0) Then
+                'Checks path to specified zone for other pieces
+                For i = 1 To 32
+                    'First checks piece is in same column, then checks if it is between piece to move and desired location
+                    If piecestats(i).xPos = xPos And ((piecestats(i).yPos > yPos And piecestats(i).yPos < yP) Or (piecestats(i).yPos < yPos And piecestats(i).yPos > yP)) Then
+                        Console.WriteLine("Error-piece in way!")
+                        Return False
+                    End If
+                Next
+                Console.WriteLine()
+                Return True
+                'Moves in x direction
+            ElseIf (xDiff <> 0 And yDiff = 0) Then
+                'Checks path to specified zone for other pieces
+                For i = 1 To 32
+                    'First checks piece is in same row, then checks if it is between piece to move and desired location
+                    If piecestats(i).yPos = yPos And ((piecestats(i).xPos > xPos And piecestats(i).xPos < xP) Or (piecestats(i).xPos < xPos And piecestats(i).xPos > xP)) Then
+                        Console.WriteLine("Error-piece in way!")
+                        Return False
+                    End If
+                Next
+                Console.WriteLine()
+                Return True
+            Else
+                Console.WriteLine("Error: Must move in a single direction only")
+                Return False
+            End If
+
+        ElseIf piecestats(selectPiece).type = 3 Then ' - Knight
+            'Check moves on all axes
+            If xDiff = 2 And yDiff = 1 Then
+                Return True
+            ElseIf xDiff = 1 And yDiff = 2 Then
+                Return True
+            ElseIf xDiff = -2 And yDiff = -1 Then
+                Return True
+            ElseIf xDiff = -1 And yDiff = -2 Then
+                Return True
+            ElseIf xDiff = 2 And yDiff = -1 Then
+                Return True
+            ElseIf xDiff = 1 And yDiff = -2 Then
+                Return True
+            ElseIf xDiff = -2 And yDiff = 1 Then
+                Return True
+            ElseIf xDiff = -1 And yDiff = 2 Then
+                Return True
+            Else
+                Console.WriteLine("Error - Knight cannot move in that way!")
+                Return False
+            End If
+
         End If
         Console.WriteLine("Invalid error")
         Return False
