@@ -1,5 +1,5 @@
 ﻿Public Class Chessboard
-    Inherits MovePiece
+    Inherits AI
     Protected board(7, 7) As String
 
     Protected Sub boardGenerate()
@@ -28,7 +28,7 @@
             End If
         Next
     End Sub
-    Public Function interfaceUpdate()
+    Public Sub interfaceUpdate()
 
         Console.Write("    ")
         For x = 0 To 7
@@ -44,14 +44,24 @@
                 Else
                     Console.BackgroundColor = ConsoleColor.Magenta
                 End If
+                For i = 1 To 32
+                    If piecestats(i).yPos = x And piecestats(i).xPos = y Then
+                        If piecestats(i).isWhite = True Then
+                            Console.ForegroundColor = ConsoleColor.White
+                        Else
+                            Console.ForegroundColor = ConsoleColor.Black
+                        End If
+                    End If
+                Next
                 Console.Write(" " & board(x, y) & " ")
                 Console.BackgroundColor = ConsoleColor.Black
+                Console.ForegroundColor = ConsoleColor.Gray
                 Console.Write("|")
             Next
             Console.WriteLine()
         Next
-    End Function
-    Public Function boardUpdate()
+    End Sub
+    Public Sub boardUpdate()
         For x = 0 To 7
             For y = 0 To 7
                 board(x, y) = " "
@@ -76,14 +86,19 @@
                 End If
             End If
         Next
-    End Function
+    End Sub
+
     Public Sub Test()
         Dim Count As Integer
         boardGenerate()
         While True
             boardUpdate()
             interfaceUpdate()
-            pieceMove()
+            If Count Mod 2 = 0 Then
+                pieceMove(True)
+            Else
+                AITest()
+            End If
             Count += 1
         End While
     End Sub

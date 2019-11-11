@@ -1,6 +1,6 @@
 ﻿Public Class ChessPieceV2
     Public Structure Piece
-        Dim type As Integer
+        Dim type, value As Integer
         Dim xPos, yPos As Integer
         Dim isWhite As Boolean
         Dim alive As Boolean
@@ -88,10 +88,28 @@
                 pieces(i + 16).yPos = 7
             End If
         Next
+        For i = 1 To 16
+            If pieces(i).type = 1 Then
+                pieces(i).value = -10
+                pieces(i + 16).value = 10
+            ElseIf pieces(i).type = 2 Then
+                pieces(i).value = -50
+                pieces(i + 16).value = 50
+            ElseIf pieces(i).type = 3 Then
+                pieces(i).value = -30
+                pieces(i + 16).value = 30
+            ElseIf pieces(i).type = 4 Then
+                pieces(i).value = -30
+                pieces(i + 16).value = 30
+            ElseIf pieces(i).type = 5 Then
+                pieces(i).value = -90
+                pieces(i + 16).value = 90
+            ElseIf pieces(i).type = 6 Then
+                pieces(i).value = -500
+                pieces(i + 16).value = 500
+            End If
+        Next
         Return pieces
-    End Function
-    Public Function pieceGet()
-
     End Function
     Public Sub Test2()
         PieceMake()

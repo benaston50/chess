@@ -1,6 +1,7 @@
 ﻿Module Module1
 
     Sub Main()
+
         Dim board As New Chessboard
         Console.ReadKey()
         board.Test()
