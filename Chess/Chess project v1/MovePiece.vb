@@ -10,9 +10,15 @@
             Console.WriteLine("White's turn!")
             While falsePiece = True
                 Console.WriteLine("What piece do you want to move(x)")
-                xP = Console.ReadLine() - 1
+                Try
+                    xP = Console.ReadLine() - 1
+                Catch
+                End Try
                 Console.WriteLine("What piece do you want to move(y)")
-                yP = Console.ReadLine() - 1
+                Try
+                    yP = Console.ReadLine() - 1
+                Catch
+                End Try
                 For i = 1 To 32
                     If piecestats(i).xPos = xP And piecestats(i).yPos = yP Then
                         selectPiece = i
@@ -22,19 +28,25 @@
                     If piecestats(selectPiece).isWhite = isWhite Then
                         falsePiece = False
                     Else
-                        Console.WriteLine("Not your go! Choose a piece of your colour.")
+                        Console.WriteLine("Not your piece! Choose a piece of your colour.")
                     End If
 
                 Else
-                    Console.WriteLine("no piece found here")
+                    Console.WriteLine("No piece found here.")
                 End If
             End While
             While falseMove = True
                 Console.WriteLine("Where do you want to move to?")
                 Console.WriteLine("Pos(x)")
-                xP = Console.ReadLine() - 1
+                Try
+                    xP = Console.ReadLine() - 1
+                Catch
+                End Try
                 Console.WriteLine("Pos(y)")
-                yP = Console.ReadLine() - 1
+                Try
+                    yP = Console.ReadLine() - 1
+                Catch
+                End Try
                 If checkValidMove(xP, yP, piecestats, selectPiece) = True Then
                     Console.Clear()
                     falseMove = False
@@ -198,7 +210,6 @@
                         Return False
                     End If
                 Next
-                Console.WriteLine()
                 Return True
                 'Moves in x direction
             ElseIf (xDiff <> 0 And yDiff = 0) Then
@@ -209,7 +220,6 @@
                         Return False
                     End If
                 Next
-                Console.WriteLine()
                 Return True
             Else
                 Return False
@@ -271,7 +281,6 @@
                         Return False
                     End If
                 Next
-                Console.WriteLine()
                 Return True
                 'Moves in x direction
             ElseIf (xDiff <> 0 And yDiff = 0) Then
@@ -282,7 +291,6 @@
                         Return False
                     End If
                 Next
-                Console.WriteLine()
                 Return True
             ElseIf (xDiff - yDiff = 0) Or (xDiff + yDiff = 0) Then
                 'Checks path to specified zone for other pieces
