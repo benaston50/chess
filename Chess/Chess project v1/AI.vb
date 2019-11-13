@@ -39,6 +39,7 @@
         Dim maxmove As New List(Of Integer)
         Dim validmove As New List(Of Integer)
         Dim maxVal, maxMov As Integer
+        Dim rootStack As New Stack(Of Node)
         Dim rootVal(15) As Integer
         maxVal = -1000
         For rootNum = 0 To 15
@@ -80,7 +81,8 @@
             maxmove.Clear()
         Next
         For rootNum = 0 To 15
-            rootVal(rootNum) = Traversal(Nodes(rootNum), 0)
+            'rootVal(rootNum) = Traversal(Nodes(rootNum), 0)
+            rootVal(rootNum) = Traverse(Nodes(rootNum))
             If rootVal(rootNum) > maxVal Then
                 maxVal = rootVal(rootNum)
                 maxMov = rootNum
@@ -186,6 +188,7 @@
     End Function
     Private Function Traversal(ByVal noder As Node, value As Integer)
         Dim max As Integer = -1000
+        Dim vals() As Integer
         For Each child In noder.child
 
 
@@ -199,6 +202,23 @@
         'Console.WriteLine(recCount & " ")
         'recCount = 0
         Return max
+    End Function
+    Private Function Traverse(root As Node)
+        Dim stack = New Stack(Of Node)()
+        stack.Push(root)
+        Dim val As Integer
+
+        While stack.Count > 0
+            Dim current = stack.Pop()
+
+            Console.WriteLine(current.value)
+            val += current.value
+            ' Process the node
+            For i As Integer = current.child.Count - 1 To 0 Step -1
+                stack.Push(current.child(i))
+            Next
+        End While
+        Return val
     End Function
     Public Sub AITest()
 
