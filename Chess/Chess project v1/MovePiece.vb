@@ -128,6 +128,10 @@
         yPos = piecestats(selectPiece).yPos
         xDiff = xPos - xP
         yDiff = yPos - yP
+        'On board check
+        If xP > 7 Or yP > 7 Or xP < 0 Or yP < 0 Then
+            Return False
+        End If
         For i = 1 To 32
             'Friendly Fire check
             If piecestats(i).xPos = xP And piecestats(i).yPos = yP Then

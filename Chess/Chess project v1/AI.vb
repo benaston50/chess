@@ -1,6 +1,6 @@
 ﻿Public Class AI
     Inherits Tree
-    Dim recCount As Double
+    Dim recCount As Integer
     Private Sub AIMove1()
         Dim maxcount As Integer
         Dim maxmove As New List(Of Integer)
@@ -41,6 +41,7 @@
         Dim maxVal, maxMov As Integer
         Dim rootStack As New Stack(Of Node)
         Dim rootVal(15) As Integer
+        Dim rootVals(3) As Integer
         maxVal = -1000
         For rootNum = 0 To 15
             maxmove.Add(0)
@@ -81,14 +82,14 @@
             maxmove.Clear()
         Next
         For rootNum = 0 To 15
-            'rootVal(rootNum) = Traversal(Nodes(rootNum), 0)
-            rootVal(rootNum) = Traverse(Nodes(rootNum))
+            rootVal(rootNum) = Traversal(Nodes(rootNum), 0, rootVals)
+            'rootVal(rootNum) = Traverse(Nodes(rootNum))
             If rootVal(rootNum) > maxVal Then
                 maxVal = rootVal(rootNum)
                 maxMov = rootNum
             End If
             'Console.WriteLine(NodeCount)
-            'Console.WriteLine(rootNum + 1 & " : " & rootVal(rootNum))
+            Console.WriteLine(rootNum + 1 & " : " & rootVal(rootNum))
         Next
         pieceMove(False, Nodes(maxMov).move(0), Nodes(maxMov).move(1), maxMov + 1)
     End Sub
@@ -186,21 +187,36 @@
         Next
         Return noder.Children
     End Function
-    Private Function Traversal(ByVal noder As Node, value As Integer)
-        Dim max As Integer = -1000
-        Dim vals() As Integer
+    Private Function Traversal(ByVal noder As Node, value As Integer, values() As Integer)
+        recCount += 1
+        Dim max As Integer
         For Each child In noder.child
 
 
             'Console.WriteLine(noder.piece & " " & noder.value)
-            Traversal(child, value + noder.value)
-            'recCount += 1
+
+            Traversal(child, value + noder.value, values)
+
         Next
-        If max < noder.value Then
-            max = noder.value
+        If recCount < 0 Then
+            Console.WriteLine("recCount<0")
+            If values(recCount) < noder.value Then
+                Console.WriteLine("values(recCount)<noder.value")
+                values(recCount) = noder.value
+            End If
+        Else
+
         End If
+        'If max < noder.value Then
+        '    max = noder.value
+        'End If
         'Console.WriteLine(recCount & " ")
-        'recCount = 0
+
+        recCount -= 1
+        For i = 0 To values.Length - 1
+            'Console.WriteLine(values(i))
+            max += values(i)
+        Next
         Return max
     End Function
     Private Function Traverse(root As Node)
