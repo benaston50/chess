@@ -1,14 +1,14 @@
 ﻿Public Class Tree
     Inherits MovePiece
-    Public NodeCount As Integer
+    Public nodecount As Integer
     Protected Structure Node
-        Dim Children As List(Of Node)
-        Public ReadOnly Property child() As List(Of Node)
+        Dim children As List(Of Node)
+        Public ReadOnly Property childs() As List(Of Node)
             Get
-                If Children Is Nothing Then
-                    Children = New List(Of Node)
+                If children Is Nothing Then
+                    children = New List(Of Node)
                 End If
-                Return Children
+                Return children
             End Get
         End Property
         Dim alpha, beta As Integer

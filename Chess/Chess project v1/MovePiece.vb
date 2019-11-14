@@ -1,31 +1,34 @@
 ﻿Public Class MovePiece
     Inherits ChessPieceV2
-    Public piecestats() As Piece = PieceMake()
-    Public Sub pieceMove(ByVal isWhite As Boolean, Optional ByVal xP As Integer = 0, Optional ByVal yP As Integer = 0, Optional ByVal selectPiece As Integer = 0)
+    Public pieceStats() As Piece = pieceMake()
+    Public Sub pieceMove(ByVal isWhite As Boolean, Optional ByVal xChoice As Integer = 0, Optional ByVal yChoice As Integer = 0, Optional ByVal selectPiece As Integer = 0)
         Dim choice As Integer
         Dim falseMove, falsePiece As Boolean
         falseMove = True
         falsePiece = True
         If isWhite = True Then
             Console.WriteLine("White's turn!")
+            'Loops piece choice until valid piece is chosen
             While falsePiece = True
                 Console.WriteLine("What piece do you want to move(x)")
                 Try
-                    xP = Console.ReadLine() - 1
+                    xChoice = Console.ReadLine() - 1
                 Catch
                 End Try
                 Console.WriteLine("What piece do you want to move(y)")
                 Try
-                    yP = Console.ReadLine() - 1
+                    yChoice = Console.ReadLine() - 1
                 Catch
                 End Try
-                For i = 1 To 32
-                    If piecestats(i).xPos = xP And piecestats(i).yPos = yP Then
-                        selectPiece = i
+                'Finds piece chosen by player
+                For piece = 1 To 32
+                    If pieceStats(piece).xPos = xChoice And pieceStats(piece).yPos = yChoice Then
+                        selectPiece = piece
                     End If
                 Next
+                'Checks piece is a teammate piece
                 If selectPiece <> 0 Then
-                    If piecestats(selectPiece).isWhite = isWhite Then
+                    If pieceStats(selectPiece).isWhite = isWhite Then
                         falsePiece = False
                     Else
                         Console.WriteLine("Not your piece! Choose a piece of your colour.")
@@ -35,28 +38,31 @@
                     Console.WriteLine("No piece found here.")
                 End If
             End While
+            'Loops until valid position to move to is chosen
             While falseMove = True
                 Console.WriteLine("Where do you want to move to?")
                 Console.WriteLine("Pos(x)")
                 Try
-                    xP = Console.ReadLine() - 1
+                    xChoice = Console.ReadLine() - 1
                 Catch
                 End Try
                 Console.WriteLine("Pos(y)")
                 Try
-                    yP = Console.ReadLine() - 1
+                    yChoice = Console.ReadLine() - 1
                 Catch
                 End Try
-                If checkValidMove(xP, yP, piecestats, selectPiece) = True Then
+                'Calls function checkValidMove to see if the move meets all rules of chess
+                If checkValidMove(xChoice, yChoice, pieceStats, selectPiece) = True Then
                     Console.Clear()
                     falseMove = False
-                    For i = 1 To 32
-                        If piecestats(i).xPos = xP And piecestats(i).yPos = yP Then
-                            piecestats(i).xPos = -1
-                            piecestats(i).yPos = -1
-                            piecestats(i).alive = False
+                    'Sees if piece has been taken
+                    For piece = 1 To 32
+                        If pieceStats(piece).xPos = xChoice And pieceStats(piece).yPos = yChoice Then
+                            pieceStats(piece).xPos = -1
+                            pieceStats(piece).yPos = -1
+                            pieceStats(piece).alive = False
                             Console.Write("Black ")
-                            Select Case piecestats(i).type
+                            Select Case pieceStats(piece).type
                                 Case 1
                                     Console.WriteLine("Pawn has been taken!")
                                 Case 2
@@ -75,9 +81,10 @@
 
                         End If
                     Next
-                    piecestats(selectPiece).xPos = xP
-                    piecestats(selectPiece).yPos = yP
-                    piecestats(selectPiece).movecount += 1
+                    'Moves piece
+                    pieceStats(selectPiece).xPos = xChoice
+                    pieceStats(selectPiece).yPos = yChoice
+                    pieceStats(selectPiece).movecount += 1
                 Else
                     Console.WriteLine("Invalid move!")
                     Console.WriteLine("Enter 1 to choose a new place to move, enter 9 to choose a new piece to move")
@@ -91,12 +98,13 @@
         Else
             Console.WriteLine("Black's(AI) turn!")
             For i = 1 To 32
-                If piecestats(i).xPos = xP And piecestats(i).yPos = yP Then
-                    piecestats(i).xPos = -1
-                    piecestats(i).yPos = -1
-                    piecestats(i).alive = False
+                'Checks if piece has been taken
+                If pieceStats(i).xPos = xChoice And pieceStats(i).yPos = yChoice Then
+                    pieceStats(i).xPos = -1
+                    pieceStats(i).yPos = -1
+                    pieceStats(i).alive = False
                     Console.Write("White ")
-                    Select Case piecestats(i).type
+                    Select Case pieceStats(i).type
                         Case 1
                             Console.WriteLine("Pawn has been taken!")
                         Case 2
@@ -115,41 +123,44 @@
 
                 End If
             Next
-            piecestats(selectPiece).xPos = xP
-            piecestats(selectPiece).yPos = yP
-            piecestats(selectPiece).movecount += 1
+            'Moves piece
+            pieceStats(selectPiece).xPos = xChoice
+            pieceStats(selectPiece).yPos = yChoice
+            pieceStats(selectPiece).movecount += 1
         End If
 
     End Sub
-    Protected Function checkValidMove(ByVal xP As Integer, yP As Integer, piecestats() As Piece, selectPiece As Integer)
+    Protected Function checkValidMove(ByVal xChoice As Integer, yChoice As Integer, pieceStats() As Piece, selectPiece As Integer)
         Dim enemypiece As Integer
         Dim xPos, yPos, xDiff, yDiff As Integer
-        xPos = piecestats(selectPiece).xPos
-        yPos = piecestats(selectPiece).yPos
-        xDiff = xPos - xP
-        yDiff = yPos - yP
+        'Current piece position
+        xPos = pieceStats(selectPiece).xPos
+        yPos = pieceStats(selectPiece).yPos
+        'Difference between current position and desired position
+        xDiff = xPos - xChoice
+        yDiff = yPos - yChoice
         'On board check
-        If xP > 7 Or yP > 7 Or xP < 0 Or yP < 0 Then
+        If xChoice > 7 Or yChoice > 7 Or xChoice < 0 Or yChoice < 0 Then
             Return False
         End If
-        For i = 1 To 32
+        For piece = 1 To 32
             'Friendly Fire check
-            If piecestats(i).xPos = xP And piecestats(i).yPos = yP Then
-                enemypiece = i
-                If i <> selectPiece And ((piecestats(i).isWhite = True And piecestats(selectPiece).isWhite = True) Or (piecestats(i).isWhite = False And piecestats(selectPiece).isWhite = False)) Then
+            If pieceStats(piece).xPos = xChoice And pieceStats(piece).yPos = yChoice Then
+                enemypiece = piece
+                If piece <> selectPiece And ((pieceStats(piece).isWhite = True And pieceStats(selectPiece).isWhite = True) Or (pieceStats(piece).isWhite = False And pieceStats(selectPiece).isWhite = False)) Then
                     Return False
                 End If
             End If
         Next
 
         'Desired location <> current location check
-        If xPos = xP And yPos = yP Then
+        If xPos = xChoice And yPos = yChoice Then
             Return False
         End If
 
         'Pawn Rule Check
-        If piecestats(selectPiece).type = 1 Then ' - Pawn
-            If piecestats(selectPiece).isWhite = True Then 'Bottom up(white)
+        If pieceStats(selectPiece).type = 1 Then ' - Pawn
+            If pieceStats(selectPiece).isWhite = True Then 'Bottom up(white)
                 'Attacking move check
                 If enemypiece <> 0 Then
                     If Math.Abs(xDiff) = 1 And yDiff = 1 Then
@@ -159,10 +170,10 @@
                     End If
                 End If
                 'Two spaces allowed on first move check
-                If piecestats(selectPiece).movecount = 0 Then
+                If pieceStats(selectPiece).movecount = 0 Then
                     If yDiff = 2 And xDiff = 0 Then
-                        For i = 1 To 32
-                            If piecestats(i).xPos = xP And piecestats(i).yPos = yP + 1 Then
+                        For piece = 1 To 32
+                            If pieceStats(piece).xPos = xChoice And pieceStats(piece).yPos = yChoice + 1 Then
                                 Return False
                             End If
                         Next
@@ -186,10 +197,10 @@
                     End If
                 End If
                 'Two spaces allowed on first move check
-                If piecestats(selectPiece).movecount = 0 Then
+                If pieceStats(selectPiece).movecount = 0 Then
                     If yDiff = -2 And xDiff = 0 Then
-                        For i = 1 To 32
-                            If piecestats(i).xPos = xP And piecestats(i).yPos = yP - 1 Then
+                        For piece = 1 To 32
+                            If pieceStats(piece).xPos = xChoice And pieceStats(piece).yPos = yChoice - 1 Then
                                 Return False
                             End If
                         Next
@@ -204,13 +215,13 @@
                 End If
             End If
 
-        ElseIf piecestats(selectPiece).type = 2 Then ' - Rook
+        ElseIf pieceStats(selectPiece).type = 2 Then ' - Rook
             'Moves in y direction
             If (xDiff = 0 And yDiff <> 0) Then
                 'Checks path to specified zone for other pieces
-                For i = 1 To 32
+                For piece = 1 To 32
                     'First checks piece is in same column, then checks if it is between piece to move and desired location
-                    If piecestats(i).xPos = xPos And ((piecestats(i).yPos > yPos And piecestats(i).yPos < yP) Or (piecestats(i).yPos < yPos And piecestats(i).yPos > yP)) Then
+                    If pieceStats(piece).xPos = xPos And ((pieceStats(piece).yPos > yPos And pieceStats(piece).yPos < yChoice) Or (pieceStats(piece).yPos < yPos And pieceStats(piece).yPos > yChoice)) Then
                         Return False
                     End If
                 Next
@@ -218,9 +229,9 @@
                 'Moves in x direction
             ElseIf (xDiff <> 0 And yDiff = 0) Then
                 'Checks path to specified zone for other pieces
-                For i = 1 To 32
+                For piece = 1 To 32
                     'First checks piece is in same row, then checks if it is between piece to move and desired location
-                    If piecestats(i).yPos = yPos And ((piecestats(i).xPos > xPos And piecestats(i).xPos < xP) Or (piecestats(i).xPos < xPos And piecestats(i).xPos > xP)) Then
+                    If pieceStats(piece).yPos = yPos And ((pieceStats(piece).xPos > xPos And pieceStats(piece).xPos < xChoice) Or (pieceStats(piece).xPos < xPos And pieceStats(piece).xPos > xChoice)) Then
                         Return False
                     End If
                 Next
@@ -229,7 +240,7 @@
                 Return False
             End If
 
-        ElseIf piecestats(selectPiece).type = 3 Then ' - Knight
+        ElseIf pieceStats(selectPiece).type = 3 Then ' - Knight
             'Check moves on all axes
             If xDiff = 2 And yDiff = 1 Then
                 Return True
@@ -251,21 +262,21 @@
                 Return False
             End If
 
-        ElseIf piecestats(selectPiece).type = 4 Then ' - Bishop
+        ElseIf pieceStats(selectPiece).type = 4 Then ' - Bishop
             'Diagonal Check
             If (xDiff - yDiff = 0) Or (xDiff + yDiff = 0) Then
                 'Checks path to specified zone for other pieces
-                For i = 1 To 32
+                For piece = 1 To 32
                     'Checks piece is diagonal
-                    If Math.Abs(piecestats(i).xPos - xPos) = Math.Abs(piecestats(i).yPos - yPos) Then
+                    If Math.Abs(pieceStats(piece).xPos - xPos) = Math.Abs(pieceStats(piece).yPos - yPos) Then
                         'Checks y=-x between piece and desired location
-                        If (piecestats(i).xPos < xP And piecestats(i).yPos < yP) And (piecestats(i).xPos > xPos And piecestats(i).yPos > yPos) Then
+                        If (pieceStats(piece).xPos < xChoice And pieceStats(piece).yPos < yChoice) And (pieceStats(piece).xPos > xPos And pieceStats(piece).yPos > yPos) Then
                             Return False
-                        ElseIf (piecestats(i).xPos > xP And piecestats(i).yPos > yP) And (piecestats(i).xPos < xPos And piecestats(i).yPos < yPos) Then
+                        ElseIf (pieceStats(piece).xPos > xChoice And pieceStats(piece).yPos > yChoice) And (pieceStats(piece).xPos < xPos And pieceStats(piece).yPos < yPos) Then
                             Return False
-                        ElseIf (piecestats(i).xPos < xP And piecestats(i).yPos > yP) And (piecestats(i).xPos > xPos And piecestats(i).yPos < yPos) Then
+                        ElseIf (pieceStats(piece).xPos < xChoice And pieceStats(piece).yPos > yChoice) And (pieceStats(piece).xPos > xPos And pieceStats(piece).yPos < yPos) Then
                             Return False
-                        ElseIf (piecestats(i).xPos > xP And piecestats(i).yPos < yP) And (piecestats(i).xPos < xPos And piecestats(i).yPos > yPos) Then
+                        ElseIf (pieceStats(piece).xPos > xChoice And pieceStats(piece).yPos < yChoice) And (pieceStats(piece).xPos < xPos And pieceStats(piece).yPos > yPos) Then
                             Return False
                         End If
 
@@ -275,13 +286,13 @@
             Else
                 Return False
             End If
-        ElseIf piecestats(selectPiece).type = 5 Then ' - Queen
+        ElseIf pieceStats(selectPiece).type = 5 Then ' - Queen
             'Moves in y direction
             If (xDiff = 0 And yDiff <> 0) Then
                 'Checks path to specified zone for other pieces
-                For i = 1 To 32
+                For piece = 1 To 32
                     'First checks piece is in same column, then checks if it is between piece to move and desired location
-                    If piecestats(i).xPos = xPos And ((piecestats(i).yPos > yPos And piecestats(i).yPos < yP) Or (piecestats(i).yPos < yPos And piecestats(i).yPos > yP)) Then
+                    If pieceStats(piece).xPos = xPos And ((pieceStats(piece).yPos > yPos And pieceStats(piece).yPos < yChoice) Or (pieceStats(piece).yPos < yPos And pieceStats(piece).yPos > yChoice)) Then
                         Return False
                     End If
                 Next
@@ -289,26 +300,26 @@
                 'Moves in x direction
             ElseIf (xDiff <> 0 And yDiff = 0) Then
                 'Checks path to specified zone for other pieces
-                For i = 1 To 32
+                For piece = 1 To 32
                     'First checks piece is in same row, then checks if it is between piece to move and desired location
-                    If piecestats(i).yPos = yPos And ((piecestats(i).xPos > xPos And piecestats(i).xPos < xP) Or (piecestats(i).xPos < xPos And piecestats(i).xPos > xP)) Then
+                    If pieceStats(piece).yPos = yPos And ((pieceStats(piece).xPos > xPos And pieceStats(piece).xPos < xChoice) Or (pieceStats(piece).xPos < xPos And pieceStats(piece).xPos > xChoice)) Then
                         Return False
                     End If
                 Next
                 Return True
             ElseIf (xDiff - yDiff = 0) Or (xDiff + yDiff = 0) Then
                 'Checks path to specified zone for other pieces
-                For i = 1 To 32
+                For piece = 1 To 32
                     'Checks piece is diagonal
-                    If Math.Abs(piecestats(i).xPos - xPos) = Math.Abs(piecestats(i).yPos - yPos) Then
+                    If Math.Abs(pieceStats(piece).xPos - xPos) = Math.Abs(pieceStats(piece).yPos - yPos) Then
                         'Checks y=-x between piece and desired location
-                        If (piecestats(i).xPos < xP And piecestats(i).yPos < yP) And (piecestats(i).xPos > xPos And piecestats(i).yPos > yPos) Then
+                        If (pieceStats(piece).xPos < xChoice And pieceStats(piece).yPos < yChoice) And (pieceStats(piece).xPos > xPos And pieceStats(piece).yPos > yPos) Then
                             Return False
-                        ElseIf (piecestats(i).xPos > xP And piecestats(i).yPos > yP) And (piecestats(i).xPos < xPos And piecestats(i).yPos < yPos) Then
+                        ElseIf (pieceStats(piece).xPos > xChoice And pieceStats(piece).yPos > yChoice) And (pieceStats(piece).xPos < xPos And pieceStats(piece).yPos < yPos) Then
                             Return False
-                        ElseIf (piecestats(i).xPos < xP And piecestats(i).yPos > yP) And (piecestats(i).xPos > xPos And piecestats(i).yPos < yPos) Then
+                        ElseIf (pieceStats(piece).xPos < xChoice And pieceStats(piece).yPos > yChoice) And (pieceStats(piece).xPos > xPos And pieceStats(piece).yPos < yPos) Then
                             Return False
-                        ElseIf (piecestats(i).xPos > xP And piecestats(i).yPos < yP) And (piecestats(i).xPos < xPos And piecestats(i).yPos > yPos) Then
+                        ElseIf (pieceStats(piece).xPos > xChoice And pieceStats(piece).yPos < yChoice) And (pieceStats(piece).xPos < xPos And pieceStats(piece).yPos > yPos) Then
                             Return False
                         End If
 
@@ -319,7 +330,7 @@
                 Return False
             End If
 
-        ElseIf piecestats(selectPiece).type = 6 Then
+        ElseIf pieceStats(selectPiece).type = 6 Then
             If (Math.Abs(xDiff) = 1 Or Math.Abs(yDiff) = 1) And Math.Abs(xDiff) <= 1 And Math.Abs(yDiff) <= 1 Then
 
                 Return True

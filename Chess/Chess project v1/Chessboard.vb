@@ -10,20 +10,20 @@
             Next
         Next
         Dim pieces(32) As Piece
-        pieces = PieceMake()
-        For i = 1 To 32
-            If pieces(i).type = 1 Then
-                board(pieces(i).yPos, pieces(i).xPos) = "P"
-            ElseIf pieces(i).type = 2 Then
-                board(pieces(i).yPos, pieces(i).xPos) = "R"
-            ElseIf pieces(i).type = 3 Then
-                board(pieces(i).yPos, pieces(i).xPos) = "n"
-            ElseIf pieces(i).type = 4 Then
-                board(pieces(i).yPos, pieces(i).xPos) = "B"
-            ElseIf pieces(i).type = 5 Then
-                board(pieces(i).yPos, pieces(i).xPos) = "Q"
-            ElseIf pieces(i).type = 6 Then
-                board(pieces(i).yPos, pieces(i).xPos) = "K"
+        pieces = pieceMake()
+        For piece = 1 To 32
+            If pieces(piece).type = 1 Then
+                board(pieces(piece).yPos, pieces(piece).xPos) = "P"
+            ElseIf pieces(piece).type = 2 Then
+                board(pieces(piece).yPos, pieces(piece).xPos) = "R"
+            ElseIf pieces(piece).type = 3 Then
+                board(pieces(piece).yPos, pieces(piece).xPos) = "n"
+            ElseIf pieces(piece).type = 4 Then
+                board(pieces(piece).yPos, pieces(piece).xPos) = "B"
+            ElseIf pieces(piece).type = 5 Then
+                board(pieces(piece).yPos, pieces(piece).xPos) = "Q"
+            ElseIf pieces(piece).type = 6 Then
+                board(pieces(piece).yPos, pieces(piece).xPos) = "K"
             Else
             End If
         Next
@@ -44,9 +44,9 @@
                 Else
                     Console.BackgroundColor = ConsoleColor.Magenta
                 End If
-                For i = 1 To 32
-                    If piecestats(i).yPos = x And piecestats(i).xPos = y Then
-                        If piecestats(i).isWhite = True Then
+                For piece = 1 To 32
+                    If pieceStats(piece).yPos = x And pieceStats(piece).xPos = y Then
+                        If pieceStats(piece).isWhite = True Then
                             Console.ForegroundColor = ConsoleColor.White
                         Else
                             Console.ForegroundColor = ConsoleColor.Black
@@ -67,20 +67,20 @@
                 board(x, y) = " "
             Next
         Next
-        For i = 1 To 32
-            If piecestats(i).alive = True Then
-                If piecestats(i).type = 1 Then
-                    board(piecestats(i).yPos, piecestats(i).xPos) = "P"
-                ElseIf piecestats(i).type = 2 Then
-                    board(piecestats(i).yPos, piecestats(i).xPos) = "R"
-                ElseIf piecestats(i).type = 3 Then
-                    board(piecestats(i).yPos, piecestats(i).xPos) = "n"
-                ElseIf piecestats(i).type = 4 Then
-                    board(piecestats(i).yPos, piecestats(i).xPos) = "B"
-                ElseIf piecestats(i).type = 5 Then
-                    board(piecestats(i).yPos, piecestats(i).xPos) = "Q"
-                ElseIf piecestats(i).type = 6 Then
-                    board(piecestats(i).yPos, piecestats(i).xPos) = "K"
+        For piece = 1 To 32
+            If pieceStats(piece).alive = True Then
+                If pieceStats(piece).type = 1 Then
+                    board(pieceStats(piece).yPos, pieceStats(piece).xPos) = "P"
+                ElseIf pieceStats(piece).type = 2 Then
+                    board(pieceStats(piece).yPos, pieceStats(piece).xPos) = "R"
+                ElseIf pieceStats(piece).type = 3 Then
+                    board(pieceStats(piece).yPos, pieceStats(piece).xPos) = "n"
+                ElseIf pieceStats(piece).type = 4 Then
+                    board(pieceStats(piece).yPos, pieceStats(piece).xPos) = "B"
+                ElseIf pieceStats(piece).type = 5 Then
+                    board(pieceStats(piece).yPos, pieceStats(piece).xPos) = "Q"
+                ElseIf pieceStats(piece).type = 6 Then
+                    board(pieceStats(piece).yPos, pieceStats(piece).xPos) = "K"
                 Else
                     Console.WriteLine("Error - failed to update board")
                 End If
@@ -89,17 +89,17 @@
     End Sub
 
     Public Sub Test()
-        Dim Count As Integer
+        Dim count As Integer
         boardGenerate()
         While True
             boardUpdate()
             interfaceUpdate()
-            If Count Mod 2 = 0 Then
+            If count Mod 2 = 0 Then
                 pieceMove(True)
             Else
                 AITest()
             End If
-            Count += 1
+            count += 1
         End While
     End Sub
 End Class

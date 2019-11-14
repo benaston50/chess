@@ -1,6 +1,6 @@
 ﻿Public Class AI
     Inherits Tree
-    Dim recCount As Integer
+    Dim recursioncount As Integer
     Private Sub AIMove1()
         Dim maxcount As Integer
         Dim maxmove As New List(Of Integer)
@@ -11,15 +11,18 @@
         For piece = 1 To 16
             For x = 0 To 7
                 For y = 0 To 7
-                    If checkValidMove(x, y, piecestats, piece) = True Then
+                    'saves valid moves
+                    If checkValidMove(x, y, pieceStats, piece) = True Then
                         validmove.Add(x)
                         validmove.Add(y)
                         validmove.Add(0)
+                        'if piece is taken what is the value?
                         For enemy = 17 To 32
-                            If piecestats(enemy).xPos = x And piecestats(enemy).yPos = y Then
-                                validmove.Insert(2, piecestats(enemy).value)
+                            If pieceStats(enemy).xPos = x And pieceStats(enemy).yPos = y Then
+                                validmove.Insert(2, pieceStats(enemy).value)
                             End If
                         Next
+                        'if the current best move is worse than the current valid move, overwite validmove with maxmove
                         If maxmove(2) < validmove(2) Then
                             maxmove.Insert(0, validmove(0))
                             maxmove.Insert(1, validmove(1))
@@ -31,67 +34,68 @@
                 Next
             Next
         Next
+        'Make the move
         pieceMove(False, maxmove(0), maxmove(1), maxcount)
     End Sub
     Private Sub AIMove2()
-        Dim Nodes() As Node = New Node(15) {}
-        Dim maxcount As Integer
-        Dim maxmove As New List(Of Integer)
+        Dim treenodes() As Node = New Node(15) {}
+        Dim count As Integer
+        Dim move As New List(Of Integer)
         Dim validmove As New List(Of Integer)
-        Dim maxVal, maxMov As Integer
+        Dim maxvalue, maxmove As Integer
         Dim rootStack As New Stack(Of Node)
-        Dim rootVal(15) As Integer
+        Dim rootvalue(15) As Integer
         Dim rootVals(3) As Integer
-        maxVal = -1000
+        maxvalue = -1000
         For rootNum = 0 To 15
-            maxmove.Add(0)
-            maxmove.Add(0)
-            maxmove.Add(-1000)
-            Nodes(rootNum).Children = New List(Of Node)
-            Nodes(rootNum).piece = rootNum + 1
-            Nodes(rootNum).depth = 0
-            NodeCount += 1
+            move.Add(0)
+            move.Add(0)
+            move.Add(-1000)
+            treenodes(rootNum).children = New List(Of Node)
+            treenodes(rootNum).piece = rootNum + 1
+            treenodes(rootNum).depth = 0
+            nodecount += 1
             For x = 0 To 7
                 For y = 0 To 7
-                    If checkValidMove(x, y, piecestats, rootNum + 1) = True Then
+                    If checkValidMove(x, y, pieceStats, rootNum + 1) = True Then
                         validmove.Add(x)
                         validmove.Add(y)
                         validmove.Add(0)
                         For enemy = 17 To 32
-                            If piecestats(enemy).xPos = x And piecestats(enemy).yPos = y Then
-                                validmove.Insert(2, piecestats(enemy).value)
+                            If pieceStats(enemy).xPos = x And pieceStats(enemy).yPos = y Then
+                                validmove.Insert(2, pieceStats(enemy).value)
                             End If
                         Next
-                        If maxmove(2) < validmove(2) Then
-                            maxmove.Insert(0, validmove(0))
-                            maxmove.Insert(1, validmove(1))
-                            maxmove.Insert(2, validmove(2))
-                            maxcount = rootNum
+                        If move(2) < validmove(2) Then
+                            move.Insert(0, validmove(0))
+                            move.Insert(1, validmove(1))
+                            move.Insert(2, validmove(2))
+                            count = rootNum
                         End If
                         validmove.Clear()
                     End If
                 Next
             Next
-            Nodes(rootNum).move = {maxmove(0), maxmove(1)}
-            Nodes(rootNum).value = maxmove(2)
-            Nodes(rootNum).depth += 1
-            If maxmove(2) = -1000 Then
+            treenodes(rootNum).move = {move(0), move(1)}
+            treenodes(rootNum).value = move(2)
+            treenodes(rootNum).depth += 1
+            If move(2) = -1000 Then
             Else
-                Nodes(rootNum).Children = Mini(rootNum, 1, Nodes(rootNum))
+                treenodes(rootNum).children = Mini(rootNum, 1, treenodes(rootNum))
             End If
-            maxmove.Clear()
+            move.Clear()
         Next
         For rootNum = 0 To 15
-            rootVal(rootNum) = Traversal(Nodes(rootNum), 0, rootVals)
+            rootvalue(rootNum) = Traversal(treenodes(rootNum), 0, rootVals)
             'rootVal(rootNum) = Traverse(Nodes(rootNum))
-            If rootVal(rootNum) > maxVal Then
-                maxVal = rootVal(rootNum)
-                maxMov = rootNum
+            If rootvalue(rootNum) > maxvalue Then
+                maxvalue = rootvalue(rootNum)
+                maxmove = rootNum
             End If
             'Console.WriteLine(NodeCount)
-            Console.WriteLine(rootNum + 1 & " : " & rootVal(rootNum))
+            'Console.WriteLine(rootNum + 1 & " : " & rootvalue(rootNum))
         Next
-        pieceMove(False, Nodes(maxMov).move(0), Nodes(maxMov).move(1), maxMov + 1)
+        pieceMove(False, treenodes(maxmove).move(0), treenodes(maxmove).move(1), maxmove + 1)
     End Sub
     Private Function Max(ByVal rootNum As Integer, depth As Integer, noder As Node)
         Dim maxcount As Integer
@@ -104,16 +108,16 @@
             maxmove.Add(-1000)
             childNodes(childNum).piece = childNum + 1
             childNodes(childNum).depth = 0
-            NodeCount += 1
+            nodecount += 1
             For x = 0 To 7
                 For y = 0 To 7
-                    If checkValidMove(x, y, piecestats, childNum + 1) = True Then
+                    If checkValidMove(x, y, pieceStats, childNum + 1) = True Then
                         validmove.Add(x)
                         validmove.Add(y)
                         validmove.Add(0)
                         For enemy = 17 To 32
-                            If piecestats(enemy).xPos = x And piecestats(enemy).yPos = y Then
-                                validmove.Insert(2, piecestats(enemy).value)
+                            If pieceStats(enemy).xPos = x And pieceStats(enemy).yPos = y Then
+                                validmove.Insert(2, pieceStats(enemy).value)
                             End If
                         Next
                         If maxmove(2) < validmove(2) Then
@@ -133,11 +137,11 @@
             maxmove.Clear()
             childNodes(childNum).depth += 1
             If depth < 1 Then
-                childNodes(childNum).Children = Mini(childNum, depth + 1, noder)
+                childNodes(childNum).children = Mini(childNum, depth + 1, noder)
             End If
-            noder.Children.Add(childNodes(childNum))
+            noder.children.Add(childNodes(childNum))
         Next
-        Return noder.Children
+        Return noder.children
     End Function
     Private Function Mini(ByVal rootNum As Integer, depth As Integer, noder As Node)
         Dim mincount As Integer
@@ -151,16 +155,16 @@
             minimove.Add(1000)
             childNodes(childNum).piece = childNum + 17
             childNodes(childNum).depth = depth
-            NodeCount += 1
+            nodecount += 1
             For x = 0 To 7
                 For y = 0 To 7
-                    If checkValidMove(x, y, piecestats, childNum + 17) = True Then
+                    If checkValidMove(x, y, pieceStats, childNum + 17) = True Then
                         validmove.Add(x)
                         validmove.Add(y)
                         validmove.Add(0)
                         For enemy = 1 To 16
-                            If piecestats(enemy).xPos = x And piecestats(enemy).yPos = y Then
-                                validmove.Insert(2, piecestats(enemy).value)
+                            If pieceStats(enemy).xPos = x And pieceStats(enemy).yPos = y Then
+                                validmove.Insert(2, pieceStats(enemy).value)
                             End If
                         Next
                         If minimove(2) > validmove(2) Then
@@ -177,20 +181,20 @@
             childNodes(childNum).value = minimove(2)
             childNodes(childNum).depth += 1
             If depth < 1 And Not minimove(2) = 1000 Then
-                childNodes(childNum).Children = Max(childNum, depth + 1, noder)
+                childNodes(childNum).children = Max(childNum, depth + 1, noder)
             ElseIf minimove(2) = 1000 Then
                 childNodes(childNum).value = -1000
             End If
             'Console.WriteLine("Piece : " & childNodes(childNum).piece & "  Min : " & childNodes(childNum).value)
             minimove.Clear()
-            noder.Children.Add(childNodes(childNum))
+            noder.children.Add(childNodes(childNum))
         Next
-        Return noder.Children
+        Return noder.children
     End Function
     Private Function Traversal(ByVal noder As Node, value As Integer, values() As Integer)
-        recCount += 1
+        recursioncount += 1
         Dim max As Integer
-        For Each child In noder.child
+        For Each child In noder.childs
 
 
             'Console.WriteLine(noder.piece & " " & noder.value)
@@ -198,11 +202,11 @@
             Traversal(child, value + noder.value, values)
 
         Next
-        If recCount < 0 Then
-            Console.WriteLine("recCount<0")
-            If values(recCount) < noder.value Then
-                Console.WriteLine("values(recCount)<noder.value")
-                values(recCount) = noder.value
+        If recursioncount < 0 Then
+            'Console.WriteLine("recCount<0")
+            If values(recursioncount) < noder.value Then
+                'Console.WriteLine("values(recCount)<noder.value")
+                values(recursioncount) = noder.value
             End If
         Else
 
@@ -212,7 +216,7 @@
         'End If
         'Console.WriteLine(recCount & " ")
 
-        recCount -= 1
+        recursioncount -= 1
         For i = 0 To values.Length - 1
             'Console.WriteLine(values(i))
             max += values(i)
@@ -227,11 +231,11 @@
         While stack.Count > 0
             Dim current = stack.Pop()
 
-            Console.WriteLine(current.value)
+            'Console.WriteLine(current.value)
             val += current.value
             ' Process the node
-            For i As Integer = current.child.Count - 1 To 0 Step -1
-                stack.Push(current.child(i))
+            For i As Integer = current.childs.Count - 1 To 0 Step -1
+                stack.Push(current.childs(i))
             Next
         End While
         Return val
