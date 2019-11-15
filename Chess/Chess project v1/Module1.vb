@@ -1,11 +1,10 @@
 ﻿Module Module1
 
     Sub Main()
-
+        'Minimalism :)
         Dim board As New Chessboard
         Console.ReadKey()
-        board.Test()
-
+        board.testPlay()
         Console.ReadLine()
 
     End Sub

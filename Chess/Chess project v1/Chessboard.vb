@@ -1,8 +1,8 @@
 ﻿Public Class Chessboard
     Inherits AI
     Protected board(7, 7) As String
-
-    Protected Sub boardGenerate()
+    'Creates 7x7 board with pieces
+    Private Sub boardGenerate()
         For x = 0 To 7
 
             For y = 0 To 7
@@ -28,7 +28,8 @@
             End If
         Next
     End Sub
-    Public Sub interfaceUpdate()
+    'Writes the board layout to the console with colours! :)
+    Private Sub interfaceUpdate()
 
         Console.Write("    ")
         For x = 0 To 7
@@ -61,7 +62,8 @@
             Console.WriteLine()
         Next
     End Sub
-    Public Sub boardUpdate()
+    'Updates board array
+    Private Sub boardUpdate()
         For x = 0 To 7
             For y = 0 To 7
                 board(x, y) = " "
@@ -87,19 +89,118 @@
             End If
         Next
     End Sub
-
-    Public Sub Test()
+    'Hub of all things testing
+    'Shared a load of variables in this one
+    Public Sub testPlay()
+        Dim difficulty As Integer = 1
         Dim count As Integer
-        boardGenerate()
-        While True
-            boardUpdate()
-            interfaceUpdate()
-            If count Mod 2 = 0 Then
-                pieceMove(True)
-            Else
-                AITest()
-            End If
-            count += 1
+        Dim choice As String = ""
+        Dim menu, valid As Boolean
+        Dim webAddress As String = "https://www.dummies.com/games/chess/chess-for-dummies-cheat-sheet/"
+
+
+
+        While menu = False
+            Console.Clear()
+            Console.WriteLine("Welcome to Chess! By Ben Aston")
+            Console.WriteLine("What would you like to do?")
+            Console.WriteLine("1 - PLAY")
+            Console.WriteLine("2 - Read help on chess")
+            Console.WriteLine("3 - Edit Settings")
+            Console.WriteLine("9 - Close")
+            valid = False
+            While valid = False
+
+                Select Case choice
+                    Case "1"
+                        Console.WriteLine("What game?")
+                        Console.WriteLine("1 - 1v1")
+                        Console.WriteLine("2 - 1vAI")
+                        choice = ""
+                        While valid = False
+                            Select Case choice
+                                Case "1"
+                                    valid = True
+                                    boardGenerate()
+                                    While True
+                                        boardUpdate()
+                                        interfaceUpdate()
+                                        If count Mod 2 = 0 Then
+                                            pieceMove(True)
+                                        Else
+                                            pieceMove(False)
+                                        End If
+                                        count += 1
+                                    End While
+                                Case "2"
+                                    valid = True
+                                    boardGenerate()
+                                    While True
+                                        boardUpdate()
+                                        interfaceUpdate()
+                                        If count Mod 2 = 0 Then
+                                            pieceMove(True)
+                                        Else
+                                            If difficulty = 1 Then
+                                                AIMove1()
+                                            ElseIf difficulty = 2 Then
+                                                AIMove2()
+                                            End If
+                                        End If
+                                        count += 1
+                                    End While
+                                Case Else
+                                    Try
+                                        choice = Console.ReadLine()
+                                    Catch
+                                        Console.WriteLine("Incorrect input")
+                                        valid = False
+                                    End Try
+                            End Select
+                        End While
+
+                    Case "2"
+                        valid = True
+                        Process.Start(webAddress)
+                        Console.WriteLine("this website and these helpful text notes should help you through the program!")
+                        Console.ReadKey()
+                    Case "3"
+                        Console.WriteLine("Change difficulty:")
+                        Console.WriteLine("1-maximises based on own move")
+                        Console.WriteLine("2-minimises damage from player")
+                        Console.WriteLine("9-back to main menu")
+                        choice = Console.ReadLine()
+                        While valid = False
+                            Select Case difficulty
+                                Case "1"
+                                    difficulty = 1
+                                    valid = True
+                                Case "2"
+                                    difficulty = 2
+                                    Console.WriteLine("Prepare for failure...")
+                                    valid = True
+                                Case "9"
+                                    valid = True
+                                Case Else
+                                    Console.WriteLine("not a difficulty bucko")
+                            End Select
+                        End While
+
+                    Case "9"
+                        Console.WriteLine("Goodbye!")
+                        Console.ReadKey()
+                        End
+                    Case Else
+                        valid = False
+                        Try
+                            choice = Console.ReadLine()
+                        Catch
+                            Console.WriteLine("Incorrect input")
+                        End Try
+                End Select
+            End While
+            choice = ""
         End While
+
     End Sub
 End Class

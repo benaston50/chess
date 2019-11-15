@@ -1,7 +1,7 @@
 ﻿Public Class AI
     Inherits Tree
     Dim recursioncount As Integer
-    Private Sub AIMove1()
+    Protected Sub AIMove1()
         Dim maxcount As Integer
         Dim maxmove As New List(Of Integer)
         Dim validmove As New List(Of Integer)
@@ -37,7 +37,7 @@
         'Make the move
         pieceMove(False, maxmove(0), maxmove(1), maxcount)
     End Sub
-    Private Sub AIMove2()
+    Protected Sub AIMove2()
         Dim treenodes() As Node = New Node(15) {}
         Dim count As Integer
         Dim move As New List(Of Integer)
@@ -57,7 +57,7 @@
             nodecount += 1
             For x = 0 To 7
                 For y = 0 To 7
-                    If checkValidMove(x, y, pieceStats, rootNum + 1) = True Then
+                    If checkValidMove(x, y, pieceStats, rootNum + 1) = True And pieceStats(rootNum + 1).alive = True Then
                         validmove.Add(x)
                         validmove.Add(y)
                         validmove.Add(0)
@@ -96,6 +96,24 @@
             'Console.WriteLine(rootNum + 1 & " : " & rootvalue(rootNum))
         Next
         pieceMove(False, treenodes(maxmove).move(0), treenodes(maxmove).move(1), maxmove + 1)
+        Console.Write("Black has moved piece:")
+        Select Case pieceStats(maxmove + 1).type
+            Case 1
+                Console.Write(" Pawn ")
+            Case 2
+                Console.Write(" Rook ")
+            Case 3
+                Console.Write(" Knight ")
+            Case 4
+                Console.Write(" Bishop ")
+            Case 5
+                Console.Write(" Queen ")
+            Case 6
+                Console.Write(" King ")
+            Case Else
+                Console.Write(" Error ")
+        End Select
+        Console.WriteLine("to position(x,y) " & treenodes(maxmove).move(0) + 1 & "," & treenodes(maxmove).move(1) + 1)
     End Sub
     Private Function Max(ByVal rootNum As Integer, depth As Integer, noder As Node)
         Dim maxcount As Integer
@@ -111,7 +129,7 @@
             nodecount += 1
             For x = 0 To 7
                 For y = 0 To 7
-                    If checkValidMove(x, y, pieceStats, childNum + 1) = True Then
+                    If checkValidMove(x, y, pieceStats, childNum + 1) = True And pieceStats(rootNum + 1).alive = True Then
                         validmove.Add(x)
                         validmove.Add(y)
                         validmove.Add(0)
@@ -158,7 +176,7 @@
             nodecount += 1
             For x = 0 To 7
                 For y = 0 To 7
-                    If checkValidMove(x, y, pieceStats, childNum + 17) = True Then
+                    If checkValidMove(x, y, pieceStats, childNum + 17) = True And pieceStats(rootNum + 1).alive = True Then
                         validmove.Add(x)
                         validmove.Add(y)
                         validmove.Add(0)
@@ -240,11 +258,6 @@
         End While
         Return val
     End Function
-    Public Sub AITest()
-
-        AIMove2()
-
-    End Sub
 End Class
 
 

@@ -1,7 +1,7 @@
 ﻿Public Class MovePiece
     Inherits ChessPieceV2
     Public pieceStats() As Piece = pieceMake()
-    Public Sub pieceMove(ByVal isWhite As Boolean, Optional ByVal xChoice As Integer = 0, Optional ByVal yChoice As Integer = 0, Optional ByVal selectPiece As Integer = 0)
+    Protected Sub pieceMove(ByVal isWhite As Boolean, Optional ByVal xChoice As Integer = 0, Optional ByVal yChoice As Integer = 0, Optional ByVal selectPiece As Integer = 0)
         Dim choice As Integer
         Dim falseMove, falsePiece As Boolean
         falseMove = True
@@ -76,17 +76,22 @@
                                 Case 6
                                     Console.WriteLine("Loses! Checkmate")
                                     Console.ReadKey()
-                                    End
+                                    Exit Sub
                             End Select
 
                         End If
                     Next
                     'Moves piece
                     pieceStats(selectPiece).xPos = xChoice
-                    pieceStats(selectPiece).yPos = yChoice
+                        pieceStats(selectPiece).yPos = yChoice
                     pieceStats(selectPiece).movecount += 1
+                    'Pawn LEVEL UP
+                    If pieceStats(selectPiece).type = 1 And pieceStats(selectPiece).yPos = 0 Then
+                        pieceStats(selectPiece).type = 5
+                        Console.WriteLine("Pawn promoted!")
+                    End If
                 Else
-                    Console.WriteLine("Invalid move!")
+                        Console.WriteLine("Invalid move!")
                     Console.WriteLine("Enter 1 to choose a new place to move, enter 9 to choose a new piece to move")
                     choice = Console.ReadLine()
                     If choice = 9 Then
@@ -96,53 +101,156 @@
                 End If
             End While
         Else
-            Console.WriteLine("Black's(AI) turn!")
-            For i = 1 To 32
-                'Checks if piece has been taken
-                If pieceStats(i).xPos = xChoice And pieceStats(i).yPos = yChoice Then
-                    pieceStats(i).xPos = -1
-                    pieceStats(i).yPos = -1
-                    pieceStats(i).alive = False
-                    Console.Write("White ")
-                    Select Case pieceStats(i).type
-                        Case 1
-                            Console.WriteLine("Pawn has been taken!")
-                        Case 2
-                            Console.WriteLine("Rook has been taken!")
-                        Case 3
-                            Console.WriteLine("Knight has been taken!")
-                        Case 4
-                            Console.WriteLine("Bishop has been taken!")
-                        Case 5
-                            Console.WriteLine("Queen has been taken!")
-                        Case 6
-                            Console.WriteLine("Loses! Checkmate")
-                            Console.ReadKey()
-                            End
-                    End Select
+            If selectPiece = 0 Then
+                Console.WriteLine("Black's turn!")
+                'Loops piece choice until valid piece is chosen
+                While falsePiece = True
+                    Console.WriteLine("What piece do you want to move(x)")
+                    Try
+                        xChoice = Console.ReadLine() - 1
+                    Catch
+                    End Try
+                    Console.WriteLine("What piece do you want to move(y)")
+                    Try
+                        yChoice = Console.ReadLine() - 1
+                    Catch
+                    End Try
+                    'Finds piece chosen by player
+                    For piece = 1 To 32
+                        If pieceStats(piece).xPos = xChoice And pieceStats(piece).yPos = yChoice Then
+                            selectPiece = piece
+                        End If
+                    Next
+                    'Checks piece is a teammate piece
+                    If selectPiece <> 0 Then
+                        If pieceStats(selectPiece).isWhite = isWhite Then
+                            falsePiece = False
+                        Else
+                            Console.WriteLine("Not your piece! Choose a piece of your colour.")
+                        End If
 
+                    Else
+                        Console.WriteLine("No piece found here.")
+                    End If
+                End While
+                'Loops until valid position to move to is chosen
+                While falseMove = True
+                    Console.WriteLine("Where do you want to move to?")
+                    Console.WriteLine("Pos(x)")
+                    Try
+                        xChoice = Console.ReadLine() - 1
+                    Catch
+                    End Try
+                    Console.WriteLine("Pos(y)")
+                    Try
+                        yChoice = Console.ReadLine() - 1
+                    Catch
+                    End Try
+                    'Calls function checkValidMove to see if the move meets all rules of chess
+                    If checkValidMove(xChoice, yChoice, pieceStats, selectPiece) = True Then
+                        Console.Clear()
+                        falseMove = False
+                        'Sees if piece has been taken
+                        For piece = 1 To 32
+                            If pieceStats(piece).xPos = xChoice And pieceStats(piece).yPos = yChoice Then
+                                pieceStats(piece).xPos = -1
+                                pieceStats(piece).yPos = -1
+                                pieceStats(piece).alive = False
+                                Console.Write("White ")
+                                Select Case pieceStats(piece).type
+                                    Case 1
+                                        Console.WriteLine("Pawn has been taken!")
+                                    Case 2
+                                        Console.WriteLine("Rook has been taken!")
+                                    Case 3
+                                        Console.WriteLine("Knight has been taken!")
+                                    Case 4
+                                        Console.WriteLine("Bishop has been taken!")
+                                    Case 5
+                                        Console.WriteLine("Queen has been taken!")
+                                    Case 6
+                                        Console.WriteLine("Loses! Checkmate")
+                                        Console.ReadKey()
+                                        End
+                                End Select
+
+                            End If
+                        Next
+                        'Moves piece
+                        pieceStats(selectPiece).xPos = xChoice
+                        pieceStats(selectPiece).yPos = yChoice
+                        pieceStats(selectPiece).movecount += 1
+                        'Pawn LEVEL UP
+                        If pieceStats(selectPiece).type = 1 And pieceStats(selectPiece).yPos = 7 Then
+                            pieceStats(selectPiece).type = 5
+                            Console.WriteLine("Pawn promoted!")
+                        End If
+                    Else
+                        Console.WriteLine("Invalid move!")
+                        Console.WriteLine("Enter 1 to choose a new place to move, enter 9 to choose a new piece to move")
+                        choice = Console.ReadLine()
+                        If choice = 9 Then
+                            falseMove = False
+                            pieceMove(isWhite)
+                        End If
+                    End If
+                End While
+            Else
+                Console.WriteLine("Black's(AI) turn!")
+                For i = 1 To 32
+                    'Checks if piece has been taken
+                    If pieceStats(i).xPos = xChoice And pieceStats(i).yPos = yChoice Then
+                        pieceStats(i).xPos = -1
+                        pieceStats(i).yPos = -1
+                        pieceStats(i).alive = False
+                        Console.Write("White ")
+                        Select Case pieceStats(i).type
+                            Case 1
+                                Console.WriteLine("Pawn has been taken!")
+                            Case 2
+                                Console.WriteLine("Rook has been taken!")
+                            Case 3
+                                Console.WriteLine("Knight has been taken!")
+                            Case 4
+                                Console.WriteLine("Bishop has been taken!")
+                            Case 5
+                                Console.WriteLine("Queen has been taken!")
+                            Case 6
+                                Console.WriteLine("Loses! Checkmate")
+                                Console.ReadKey()
+                                End
+                        End Select
+
+                    End If
+                Next
+                'Moves piece
+                pieceStats(selectPiece).xPos = xChoice
+                pieceStats(selectPiece).yPos = yChoice
+                pieceStats(selectPiece).movecount += 1
+                'Pawn LEVEL UP
+                If pieceStats(selectPiece).type = 1 And pieceStats(selectPiece).yPos = 7 Then
+                    pieceStats(selectPiece).type = 5
+                    Console.WriteLine("Pawn promoted!")
                 End If
-            Next
-            'Moves piece
-            pieceStats(selectPiece).xPos = xChoice
-            pieceStats(selectPiece).yPos = yChoice
-            pieceStats(selectPiece).movecount += 1
+            End If
         End If
-
     End Sub
     Protected Function checkValidMove(ByVal xChoice As Integer, yChoice As Integer, pieceStats() As Piece, selectPiece As Integer)
         Dim enemypiece As Integer
         Dim xPos, yPos, xDiff, yDiff As Integer
+
         'Current piece position
         xPos = pieceStats(selectPiece).xPos
         yPos = pieceStats(selectPiece).yPos
         'Difference between current position and desired position
         xDiff = xPos - xChoice
         yDiff = yPos - yChoice
+
         'On board check
         If xChoice > 7 Or yChoice > 7 Or xChoice < 0 Or yChoice < 0 Then
             Return False
         End If
+
         For piece = 1 To 32
             'Friendly Fire check
             If pieceStats(piece).xPos = xChoice And pieceStats(piece).yPos = yChoice Then
@@ -158,7 +266,6 @@
             Return False
         End If
 
-        'Pawn Rule Check
         If pieceStats(selectPiece).type = 1 Then ' - Pawn
             If pieceStats(selectPiece).isWhite = True Then 'Bottom up(white)
                 'Attacking move check
@@ -215,6 +322,7 @@
                 End If
             End If
 
+
         ElseIf pieceStats(selectPiece).type = 2 Then ' - Rook
             'Moves in y direction
             If (xDiff = 0 And yDiff <> 0) Then
@@ -240,6 +348,7 @@
                 Return False
             End If
 
+
         ElseIf pieceStats(selectPiece).type = 3 Then ' - Knight
             'Check moves on all axes
             If xDiff = 2 And yDiff = 1 Then
@@ -261,6 +370,7 @@
             Else
                 Return False
             End If
+
 
         ElseIf pieceStats(selectPiece).type = 4 Then ' - Bishop
             'Diagonal Check
@@ -286,6 +396,8 @@
             Else
                 Return False
             End If
+
+
         ElseIf pieceStats(selectPiece).type = 5 Then ' - Queen
             'Moves in y direction
             If (xDiff = 0 And yDiff <> 0) Then
@@ -307,6 +419,7 @@
                     End If
                 Next
                 Return True
+
             ElseIf (xDiff - yDiff = 0) Or (xDiff + yDiff = 0) Then
                 'Checks path to specified zone for other pieces
                 For piece = 1 To 32
@@ -330,9 +443,10 @@
                 Return False
             End If
 
-        ElseIf pieceStats(selectPiece).type = 6 Then
-            If (Math.Abs(xDiff) = 1 Or Math.Abs(yDiff) = 1) And Math.Abs(xDiff) <= 1 And Math.Abs(yDiff) <= 1 Then
 
+        ElseIf pieceStats(selectPiece).type = 6 Then ' - King
+            'Checks whole area around for enemy pieces
+            If (Math.Abs(xDiff) = 1 Or Math.Abs(yDiff) = 1) And Math.Abs(xDiff) <= 1 And Math.Abs(yDiff) <= 1 Then
                 Return True
             Else
                 Return False
