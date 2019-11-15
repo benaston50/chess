@@ -93,11 +93,14 @@
                 Else
                         Console.WriteLine("Invalid move!")
                     Console.WriteLine("Enter 1 to choose a new place to move, enter 9 to choose a new piece to move")
-                    choice = Console.ReadLine()
-                    If choice = 9 Then
-                        falseMove = False
-                        pieceMove(isWhite)
-                    End If
+                    Try
+                        choice = Console.ReadLine()
+                        If choice = 9 Then
+                            falseMove = False
+                            pieceMove(isWhite)
+                        End If
+                    Catch
+                    End Try
                 End If
             End While
         Else

@@ -47,7 +47,10 @@
         Dim rootvalue(15) As Integer
         Dim rootVals(3) As Integer
         maxvalue = -1000
+        'For each first move
         For rootNum = 0 To 15
+            treenodes(rootNum).alpha = -1000
+            treenodes(rootNum).beta = 1000
             move.Add(0)
             move.Add(0)
             move.Add(-1000)
@@ -57,15 +60,18 @@
             nodecount += 1
             For x = 0 To 7
                 For y = 0 To 7
+                    'Checks move is valid
                     If checkValidMove(x, y, pieceStats, rootNum + 1) = True And pieceStats(rootNum + 1).alive = True Then
                         validmove.Add(x)
                         validmove.Add(y)
                         validmove.Add(0)
+                        'Finds if move results in taken piece
                         For enemy = 17 To 32
                             If pieceStats(enemy).xPos = x And pieceStats(enemy).yPos = y Then
                                 validmove.Insert(2, pieceStats(enemy).value)
                             End If
                         Next
+                        'If maximum move<valid move Then replace
                         If move(2) < validmove(2) Then
                             move.Insert(0, validmove(0))
                             move.Insert(1, validmove(1))
@@ -76,15 +82,18 @@
                     End If
                 Next
             Next
+            'Sets node move & value
             treenodes(rootNum).move = {move(0), move(1)}
             treenodes(rootNum).value = move(2)
             treenodes(rootNum).depth += 1
+            'Finds if node has any valid move
             If move(2) = -1000 Then
             Else
-                treenodes(rootNum).children = Mini(rootNum, 1, treenodes(rootNum))
+                treenodes(rootNum).children = Mini(rootNum, 1, treenodes(rootNum), treenodes(rootNum).alpha, treenodes(rootNum).beta)
             End If
             move.Clear()
         Next
+        'Traverses tree
         For rootNum = 0 To 15
             rootvalue(rootNum) = Traversal(treenodes(rootNum), 0, rootVals)
             'rootVal(rootNum) = Traverse(Nodes(rootNum))
@@ -115,12 +124,14 @@
         End Select
         Console.WriteLine("to position(x,y) " & treenodes(maxmove).move(0) + 1 & "," & treenodes(maxmove).move(1) + 1)
     End Sub
-    Private Function Max(ByVal rootNum As Integer, depth As Integer, noder As Node)
+    Private Function Max(ByVal rootNum As Integer, depth As Integer, noder As Node, alpha As Integer, beta As Integer)
         Dim maxcount As Integer
         Dim maxmove As New List(Of Integer)
         Dim validmove As New List(Of Integer)
         Dim childNodes() As Node = New Node(15) {}
         For childNum = 0 To 15
+            noder.alpha = -1000
+            noder.beta = 1000
             maxmove.Add(0)
             maxmove.Add(0)
             maxmove.Add(-1000)
@@ -129,15 +140,18 @@
             nodecount += 1
             For x = 0 To 7
                 For y = 0 To 7
+                    'Checks every move for isvalid
                     If checkValidMove(x, y, pieceStats, childNum + 1) = True And pieceStats(rootNum + 1).alive = True Then
                         validmove.Add(x)
                         validmove.Add(y)
                         validmove.Add(0)
+                        'Checks if enemy piece is taken
                         For enemy = 17 To 32
                             If pieceStats(enemy).xPos = x And pieceStats(enemy).yPos = y Then
                                 validmove.Insert(2, pieceStats(enemy).value)
                             End If
                         Next
+                        'If max<valid swap
                         If maxmove(2) < validmove(2) Then
                             maxmove.Insert(0, validmove(0))
                             maxmove.Insert(1, validmove(1))
@@ -148,26 +162,29 @@
                     End If
                 Next
             Next
-
+            'Makes node values
             childNodes(childNum).move = {maxmove(0), maxmove(1)}
             childNodes(childNum).value = maxmove(2)
             Console.WriteLine("Max : " & childNodes(childNum).value)
             maxmove.Clear()
             childNodes(childNum).depth += 1
+            'Recursion loop :))
             If depth < 1 Then
-                childNodes(childNum).children = Mini(childNum, depth + 1, noder)
+                childNodes(childNum).children = Mini(childNum, depth + 1, noder, alpha, beta)
             End If
             noder.children.Add(childNodes(childNum))
         Next
         Return noder.children
     End Function
-    Private Function Mini(ByVal rootNum As Integer, depth As Integer, noder As Node)
+    Private Function Mini(ByVal rootNum As Integer, depth As Integer, noder As Node, alpha As Integer, beta As Integer)
         Dim mincount As Integer
         Dim minimove As New List(Of Integer)
         Dim validmove As New List(Of Integer)
         Dim childNodes() As Node = New Node(15) {}
 
         For childNum = 0 To 15
+            noder.alpha = -1000
+            noder.beta = 1000
             minimove.Add(0)
             minimove.Add(0)
             minimove.Add(1000)
@@ -199,7 +216,7 @@
             childNodes(childNum).value = minimove(2)
             childNodes(childNum).depth += 1
             If depth < 1 And Not minimove(2) = 1000 Then
-                childNodes(childNum).children = Max(childNum, depth + 1, noder)
+                childNodes(childNum).children = Max(childNum, depth + 1, noder, alpha, beta)
             ElseIf minimove(2) = 1000 Then
                 childNodes(childNum).value = -1000
             End If

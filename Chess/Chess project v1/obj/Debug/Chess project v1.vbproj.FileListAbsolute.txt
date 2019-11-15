@@ -97,3 +97,14 @@ C:\Users\r2d2i\Downloads\chess-master (1)\chess-master\Chess\Chess project v1\ob
 C:\Users\r2d2i\Downloads\chess-master (1)\chess-master\Chess\Chess project v1\obj\Debug\Chess project v1.exe
 C:\Users\r2d2i\Downloads\chess-master (1)\chess-master\Chess\Chess project v1\obj\Debug\Chess project v1.xml
 C:\Users\r2d2i\Downloads\chess-master (1)\chess-master\Chess\Chess project v1\obj\Debug\Chess project v1.pdb
+\\lapetus\home\2018\18BA2677\Downloads\Chessy\chess-master\Chess\Chess project v1\bin\Debug\Chess project v1.exe.config
+\\lapetus\home\2018\18BA2677\Downloads\Chessy\chess-master\Chess\Chess project v1\bin\Debug\Chess project v1.exe
+\\lapetus\home\2018\18BA2677\Downloads\Chessy\chess-master\Chess\Chess project v1\bin\Debug\Chess project v1.pdb
+\\lapetus\home\2018\18BA2677\Downloads\Chessy\chess-master\Chess\Chess project v1\bin\Debug\Chess project v1.xml
+\\lapetus\home\2018\18BA2677\Downloads\Chessy\chess-master\Chess\Chess project v1\obj\Debug\Chess project v1.vbprojAssemblyReference.cache
+\\lapetus\home\2018\18BA2677\Downloads\Chessy\chess-master\Chess\Chess project v1\obj\Debug\Chess_project_v1.Resources.resources
+\\lapetus\home\2018\18BA2677\Downloads\Chessy\chess-master\Chess\Chess project v1\obj\Debug\Chess project v1.vbproj.GenerateResource.cache
+\\lapetus\home\2018\18BA2677\Downloads\Chessy\chess-master\Chess\Chess project v1\obj\Debug\Chess project v1.vbproj.CoreCompileInputs.cache
+\\lapetus\home\2018\18BA2677\Downloads\Chessy\chess-master\Chess\Chess project v1\obj\Debug\Chess project v1.exe
+\\lapetus\home\2018\18BA2677\Downloads\Chessy\chess-master\Chess\Chess project v1\obj\Debug\Chess project v1.xml
+\\lapetus\home\2018\18BA2677\Downloads\Chessy\chess-master\Chess\Chess project v1\obj\Debug\Chess project v1.pdb
